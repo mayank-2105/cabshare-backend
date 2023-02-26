@@ -29,4 +29,4 @@ class SharingUser(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return '%s (%s)' % (self.__class__.__name__, self.title)
+        return '%s (%s)' % (self.__class__.__name__, self.name)
