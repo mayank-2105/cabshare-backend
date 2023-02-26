@@ -48,11 +48,17 @@ class SharingUserViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
             address=req_serializer.validated_data.get('address')
             latitude = req_serializer.validated_data.get('latitude')
             longitude = req_serializer.validated_data.get('longitude')
-            is_to_airport= req_serializer.validated_data.get('isToAirport')
+            type = req_serializer.validated_data.get('type')
             user_location = Point(float(longitude), float(latitude), srid=4326)
 
-            start_time = trip_timing-timedelta(hours=2)
-            end_time = trip_timing+timedelta(hours=2)
+            print(trip_timing)
+            
+            if type=='PICK':
+                is_to_airport=False
+            else:
+                is_to_airport=True
+            start_time = trip_timing-timedelta(hours=4)
+            end_time = trip_timing+timedelta(hours=4)
             # pprint(start_time)
             # pprint(end_time)
             try:
@@ -66,6 +72,12 @@ class SharingUserViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
                     'distance')
                 #pprint(queryset)
 
+                
+
+                
+                unit = 'km'
+
+                res_serializer = SharingUserResSerializer(queryset, many=True, context={'unit': unit})
                 sharinguser_obj = SharingUser(
                     id=uuid.uuid4(),
                     name=name,
@@ -76,11 +88,7 @@ class SharingUserViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
                 )
 
                 sharinguser_obj.save()
-
                 
-                unit = 'km'
-
-                res_serializer = SharingUserResSerializer(queryset, many=True, context={'unit': unit})
                 return Response(res_serializer.data, status=http_status.HTTP_200_OK)
 
 

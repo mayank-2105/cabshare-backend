@@ -6,7 +6,7 @@ class SharingUserReqSerializer(serializers.Serializer):
     timing=serializers.DateTimeField()
     latitude = serializers.DecimalField(max_digits=18, decimal_places=15)
     longitude = serializers.DecimalField(max_digits=18, decimal_places=15)
-    isToAirport=serializers.BooleanField()
+    type=serializers.CharField()
 
 class SharingUserResSerializer(serializers.Serializer):
     name=serializers.CharField()
